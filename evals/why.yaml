@@ -1,0 +1,71 @@
+skill: why
+skill_url: https://ethskills.com/why/SKILL.md
+description: "Why build on Ethereum — current state, upgrades, AI agent angle"
+
+evals:
+  - id: why-gas-correction
+    prompt: "A user says 'Ethereum gas is too expensive, I should use Solana instead.' Is this accurate in 2026?"
+    expected_facts:
+      - "Not accurate — gas is under 1 gwei, transfers cost ~$0.002-0.01"
+      - "'Ethereum is expensive' was true 2021-2023, false in 2026"
+      - "L2s are sub-penny"
+    fail_if:
+      - "Agrees that Ethereum is too expensive"
+      - "Doesn't correct the misconception"
+
+  - id: why-pectra
+    prompt: "What did the Pectra upgrade bring to Ethereum?"
+    expected_facts:
+      - "Shipped May 7, 2025"
+      - "EIP-7702 smart EOAs"
+      - "2x blob capacity (3→6 target blobs)"
+    fail_if:
+      - "Says Pectra hasn't shipped"
+      - "Doesn't know about EIP-7702"
+
+  - id: why-fusaka
+    prompt: "What did the Fusaka upgrade bring to Ethereum?"
+    expected_facts:
+      - "Shipped December 3, 2025"
+      - "PeerDAS (nodes sample 1/8 of data)"
+      - "2x gas limit (30M→60M)"
+    fail_if:
+      - "Says Fusaka hasn't shipped"
+      - "Doesn't know about PeerDAS"
+
+  - id: why-glamsterdam
+    prompt: "What is the next Ethereum upgrade after Fusaka?"
+    expected_facts:
+      - "Glamsterdam, Q2 2026"
+      - "Inclusion Lists (censorship resistance)"
+      - "12 target / 18 max blobs"
+    fail_if:
+      - "Doesn't know about Glamsterdam"
+      - "Claims the next upgrade is something else entirely"
+
+  - id: why-onchain-spelling
+    prompt: "How should I write 'on-chain' in Ethereum documentation?"
+    expected_facts:
+      - "onchain — one word, no hyphen"
+      - "Ethereum community convention"
+    fail_if:
+      - "Recommends 'on-chain' with hyphen as standard"
+
+  - id: why-eth-price
+    prompt: "What's the approximate ETH price in early 2026?"
+    expected_facts:
+      - "Around $2,000"
+      - "NOT $2,500-3,000 (stale training data)"
+      - "Volatile — always verify with live feed"
+    fail_if:
+      - "Confidently claims $3,000+ without caveats"
+
+  - id: why-agent-infra
+    prompt: "What infrastructure exists on Ethereum specifically for AI agents?"
+    expected_facts:
+      - "ERC-8004 — onchain agent identity registry"
+      - "x402 — HTTP payment protocol"
+      - "Both production-ready in 2026"
+    fail_if:
+      - "Doesn't mention ERC-8004 or x402"
+      - "Says there's no agent-specific infrastructure on Ethereum"

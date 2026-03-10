@@ -1,0 +1,98 @@
+skill: gas
+skill_url: https://ethskills.com/gas/SKILL.md
+description: "Ethereum gas costs and pricing in 2026"
+
+evals:
+  - id: gas-base-fee
+    prompt: "What is the typical base fee on Ethereum mainnet right now in 2026?"
+    expected_facts:
+      - "Under 1 gwei (typically 0.1-0.5 gwei)"
+      - "NOT 10-30 gwei — that was 2021-2023"
+    fail_if:
+      - "Claims base fee is 10+ gwei as a normal condition"
+      - "Claims base fee is 30-100 gwei"
+      - "Does not mention that gas dropped dramatically"
+
+  - id: gas-eth-transfer-cost
+    prompt: "How much does a simple ETH transfer cost on Ethereum mainnet today?"
+    expected_facts:
+      - "Under $0.01 at typical gas prices"
+      - "21,000 gas units"
+    fail_if:
+      - "Claims transfer costs more than $1 under normal conditions"
+      - "Claims transfer costs $5-50"
+
+  - id: gas-swap-cost-mainnet
+    prompt: "What does a Uniswap swap cost on Ethereum mainnet in 2026?"
+    expected_facts:
+      - "Around $0.03-0.04 at typical gas (0.1 gwei)"
+      - "~180,000 gas units"
+    fail_if:
+      - "Claims swaps cost $10+ under normal conditions"
+      - "Claims swaps cost $50-100"
+
+  - id: gas-l2-costs
+    prompt: "How much does a token swap cost on Base L2?"
+    expected_facts:
+      - "$0.002-0.003"
+      - "L2 costs have two components: L2 execution + L1 data (blobs)"
+    fail_if:
+      - "Claims L2 swaps cost more than $0.10 normally"
+      - "Claims L2 swaps cost $1+"
+
+  - id: gas-ethereum-expensive-myth
+    prompt: "Is Ethereum too expensive to use for most applications?"
+    expected_facts:
+      - "No — Ethereum is cheap in 2026"
+      - "Mainnet ETH transfer under $0.01, swap under $0.05"
+      - "'Ethereum is expensive' was true 2021-2023 but false now"
+    fail_if:
+      - "Agrees that Ethereum is too expensive without qualification"
+      - "Recommends avoiding mainnet purely due to cost for typical use cases"
+
+  - id: gas-why-dropped
+    prompt: "Why did Ethereum gas prices drop so much?"
+    expected_facts:
+      - "EIP-4844 (Dencun, March 2024) introduced blob transactions"
+      - "Activity migration to L2s reduced mainnet congestion"
+      - "Pectra (May 2025) doubled blob capacity"
+      - "Fusaka (Dec 2025) added PeerDAS and 2x gas limit"
+    fail_if:
+      - "Doesn't mention EIP-4844 or blobs"
+      - "Claims gas is still high"
+
+  - id: gas-erc20-deploy
+    prompt: "How much does it cost to deploy an ERC-20 token contract on Ethereum mainnet?"
+    expected_facts:
+      - "Around $0.24 at 0.1 gwei (~1.2M gas)"
+      - "Was $200-500 in 2021-2023"
+    fail_if:
+      - "Claims deployment costs hundreds of dollars under current conditions"
+
+  - id: gas-mainnet-vs-l2
+    prompt: "When should I deploy on Ethereum mainnet vs an L2?"
+    expected_facts:
+      - "Mainnet is cheap enough for most apps now"
+      - "Use mainnet for DeFi, governance, identity, high-value"
+      - "Use L2 for consumer apps, gaming, micro-payments, high-frequency"
+    fail_if:
+      - "Says always use L2 because mainnet is too expensive"
+      - "Ignores that mainnet costs dropped significantly"
+
+  - id: gas-fee-settings
+    prompt: "What maxFeePerGas and maxPriorityFeePerGas should I set for an Ethereum transaction in 2026?"
+    expected_facts:
+      - "maxFeePerGas: 1-2 gwei (headroom for spikes)"
+      - "maxPriorityFeePerGas: 0.01-0.1 gwei"
+    fail_if:
+      - "Recommends 20+ gwei as maxFeePerGas for normal conditions"
+      - "Recommends 2+ gwei priority fee"
+
+  - id: gas-gas-limit-post-fusaka
+    prompt: "What is Ethereum's current gas limit after the Fusaka upgrade?"
+    expected_facts:
+      - "60M gas (doubled from 30M)"
+      - "Fusaka shipped December 2025"
+    fail_if:
+      - "Claims gas limit is still 30M"
+      - "Doesn't know about Fusaka"

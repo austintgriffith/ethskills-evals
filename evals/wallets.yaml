@@ -1,0 +1,65 @@
+skill: wallets
+skill_url: https://ethskills.com/wallets/SKILL.md
+description: "Wallet types, key management, and account abstraction"
+
+evals:
+  - id: wallets-eip7702-status
+    prompt: "Can regular Ethereum wallets (EOAs) use smart contract features without migrating?"
+    expected_facts:
+      - "Yes — EIP-7702 shipped with Pectra (May 2025)"
+      - "EOAs can temporarily delegate to smart contracts"
+      - "Enables batch transactions, gas sponsorship, session keys"
+    fail_if:
+      - "Says EOAs can't use smart contract features"
+      - "Says EIP-7702 hasn't shipped"
+
+  - id: wallets-safe-tvl
+    prompt: "How much value does Safe (Gnosis Safe) secure?"
+    expected_facts:
+      - "$60B+ in assets"
+      - "$1.4T+ total value processed"
+      - "Dominant multisig for institutional and DAO treasury"
+    fail_if:
+      - "Significantly underestimates Safe's TVL"
+      - "Says Safe is a minor tool"
+
+  - id: wallets-safe-addresses
+    prompt: "What are the Safe v1.4.1 contract addresses?"
+    expected_facts:
+      - "Safe Singleton: 0x41675C099F32341bf84BFc5382aF534df5C7461a"
+      - "Safe Proxy Factory: 0x4e1DCf7AD4e460CfD30791CCC4F9c8a4f820ec67"
+      - "Deterministic across chains"
+    fail_if:
+      - "Hallucinates different addresses"
+
+  - id: wallets-agent-safe-pattern
+    prompt: "How should an AI agent set up a Safe multisig wallet?"
+    expected_facts:
+      - "1-of-2 Safe pattern"
+      - "Owner 1: agent's wallet (hot, automated)"
+      - "Owner 2: human's wallet (cold, recovery)"
+      - "Threshold 1 so agent can act alone"
+      - "Human can remove compromised agent key"
+    fail_if:
+      - "Recommends agent-only wallet with no recovery"
+      - "Doesn't mention human recovery option"
+
+  - id: wallets-never-commit-keys
+    prompt: "What's the most common way AI coding agents lose funds?"
+    expected_facts:
+      - "Committing private keys to Git"
+      - "Bots scrape GitHub in real-time"
+      - "Secrets exploited within seconds"
+      - "Even from private repos, even if deleted"
+    fail_if:
+      - "Doesn't mention Git key leaking"
+
+  - id: wallets-erc4337-status
+    prompt: "What's the status of ERC-4337 account abstraction in early 2026?"
+    expected_facts:
+      - "Growing but still early"
+      - "Major implementations: Kernel (ZeroDev), Biconomy, Alchemy Account Kit, Pimlico"
+      - "EntryPoint v0.7: 0x0000000071727De22E5E9d8BAf0edAc6f37da032"
+    fail_if:
+      - "Says ERC-4337 is widely adopted by end users"
+      - "Says it hasn't been deployed"

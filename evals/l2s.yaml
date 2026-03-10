@@ -1,0 +1,103 @@
+skill: l2s
+skill_url: https://ethskills.com/l2s/SKILL.md
+description: "Ethereum Layer 2 landscape — chains, costs, DEXes, and corrections"
+
+evals:
+  - id: l2s-dominant-dex-base
+    prompt: "What is the dominant DEX on Base?"
+    expected_facts:
+      - "Aero (formerly Aerodrome)"
+      - "Uses ve(3,3) model"
+      - "NOT Uniswap"
+    fail_if:
+      - "Says Uniswap is the dominant DEX on Base"
+      - "Doesn't mention Aerodrome or Aero"
+
+  - id: l2s-dominant-dex-optimism
+    prompt: "What is the dominant DEX on Optimism?"
+    expected_facts:
+      - "Aero (formerly Velodrome)"
+      - "Aerodrome and Velodrome merged into Aero in November 2025"
+    fail_if:
+      - "Says Uniswap is the dominant DEX on Optimism"
+      - "Doesn't mention Velodrome or Aero"
+
+  - id: l2s-dominant-dex-arbitrum
+    prompt: "What is the main DEX on Arbitrum?"
+    expected_facts:
+      - "Camelot for spot trading"
+      - "GMX for perps"
+    fail_if:
+      - "Says Uniswap is the dominant DEX on Arbitrum"
+
+  - id: l2s-polygon-zkevm
+    prompt: "Should I build on Polygon zkEVM?"
+    expected_facts:
+      - "No — Polygon zkEVM is being shut down (announced June 2025)"
+      - "Polygon is refocusing on PoS + AggLayer"
+    fail_if:
+      - "Recommends building on Polygon zkEVM"
+      - "Doesn't mention the shutdown"
+
+  - id: l2s-celo-status
+    prompt: "Is Celo a Layer 1 blockchain?"
+    expected_facts:
+      - "No — Celo migrated from L1 to OP Stack L2 on March 26, 2025"
+      - "Now part of the Superchain"
+    fail_if:
+      - "Says Celo is still an L1"
+      - "Doesn't mention the migration to L2"
+
+  - id: l2s-unichain
+    prompt: "What is Unichain?"
+    expected_facts:
+      - "Uniswap's own OP Stack L2"
+      - "Launched mainnet February 11, 2025"
+      - "TEE-based block building (priority by time, not gas price)"
+      - "Chain ID 130"
+    fail_if:
+      - "Says Unichain doesn't exist or is just a testnet"
+      - "Claims it hasn't launched yet"
+
+  - id: l2s-cheapest-l2
+    prompt: "What is the cheapest major Ethereum L2?"
+    expected_facts:
+      - "Base is typically the cheapest major L2"
+      - "~50% cheaper than Arbitrum/Optimism"
+    fail_if:
+      - "Claims costs are $0.50+ per transaction on L2s"
+
+  - id: l2s-base-vs-arbitrum
+    prompt: "Should I build on Base or Arbitrum for a DeFi project?"
+    expected_facts:
+      - "Arbitrum has deepest DeFi liquidity (GMX, Pendle, Camelot)"
+      - "Base is cheapest with Coinbase on-ramp and consumer focus"
+      - "Choose based on specific needs"
+    fail_if:
+      - "Doesn't differentiate between the two chains at all"
+
+  - id: l2s-aero-merger
+    prompt: "What happened to Aerodrome and Velodrome?"
+    expected_facts:
+      - "Merged into Aero in November 2025 by Dromos Labs"
+      - "Unified cross-chain DEX covering both Base and Optimism"
+    fail_if:
+      - "Says they are still separate projects"
+      - "Doesn't know about the merger"
+
+  - id: l2s-ai-agent-chain
+    prompt: "What's the best L2 for building AI agent infrastructure?"
+    expected_facts:
+      - "Base — ERC-8004, x402, consumer ecosystem, AgentKit"
+    fail_if:
+      - "Doesn't mention Base for AI agents"
+      - "Recommends a chain with no agent infrastructure"
+
+  - id: l2s-zk-vs-optimistic-finality
+    prompt: "How long does withdrawal finality take on optimistic vs ZK rollups?"
+    expected_facts:
+      - "Optimistic rollups: 7 days (challenge period)"
+      - "ZK rollups: 15-120 minutes"
+    fail_if:
+      - "Claims optimistic rollups have fast finality"
+      - "Claims ZK rollups take days"

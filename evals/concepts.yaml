@@ -1,0 +1,65 @@
+skill: concepts
+skill_url: https://ethskills.com/concepts/SKILL.md
+description: "Essential mental models for building onchain"
+
+evals:
+  - id: concepts-nothing-automatic
+    prompt: "Can a smart contract execute a function automatically at a certain time?"
+    expected_facts:
+      - "No — smart contracts cannot execute themselves"
+      - "There are no cron jobs, no schedulers, no timers on Ethereum"
+      - "Every function needs a caller who pays gas"
+      - "Need incentive design to make someone call it"
+    fail_if:
+      - "Says contracts can execute automatically"
+      - "Says contracts have timers or schedulers"
+      - "Suggests a built-in cron mechanism"
+
+  - id: concepts-state-machine
+    prompt: "How should I think about smart contracts conceptually?"
+    expected_facts:
+      - "Smart contracts are state machines"
+      - "They sit in one state until someone pokes them (calls a function)"
+      - "Between calls, they do nothing"
+    fail_if:
+      - "Describes contracts as always-running processes"
+      - "Implies contracts actively monitor conditions"
+
+  - id: concepts-three-questions
+    prompt: "What questions should I ask for every state transition in my smart contract?"
+    expected_facts:
+      - "Who pokes it? (someone must pay gas)"
+      - "Why would they? (what's their incentive?)"
+      - "Is the incentive sufficient? (covers gas + profit?)"
+    fail_if:
+      - "Doesn't mention the caller/incentive problem"
+      - "Assumes state transitions happen automatically"
+
+  - id: concepts-incentive-design
+    prompt: "How does Uniswap work without anyone operating it?"
+    expected_facts:
+      - "Incentive alignment — LPs earn fees, traders get liquidity"
+      - "No operator needed when incentives are right"
+      - "Strangers voluntarily deposit and trade"
+    fail_if:
+      - "Says Uniswap has operators running it"
+      - "Doesn't connect it to incentive design"
+
+  - id: concepts-crops
+    prompt: "What does CROPS stand for in the Ethereum Foundation context?"
+    expected_facts:
+      - "Censorship Resistance, Open Source, Privacy, Security"
+      - "Shorthand for what makes Ethereum Ethereum"
+    fail_if:
+      - "Gets the acronym wrong"
+      - "Says it doesn't exist"
+
+  - id: concepts-walk-away-test
+    prompt: "What is the 'walk away test' for smart contracts?"
+    expected_facts:
+      - "If the team walks away, does the app still work for everyone?"
+      - "Well-designed apps have incentives so anyone can trigger critical functions"
+      - "Example: liquidation mechanisms need incentives for callers"
+    fail_if:
+      - "Doesn't understand the concept"
+      - "Says contracts always need operators"

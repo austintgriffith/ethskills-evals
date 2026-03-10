@@ -1,0 +1,86 @@
+skill: standards
+skill_url: https://ethskills.com/standards/SKILL.md
+description: "Ethereum token and protocol standards — ERC-8004, EIP-7702, x402"
+
+evals:
+  - id: std-erc8004-exists
+    prompt: "What is ERC-8004?"
+    expected_facts:
+      - "Onchain agent identity registry"
+      - "Deployed January 29, 2026"
+      - "Production ready, deployed on 20+ chains"
+      - "Three registries: Identity, Reputation, Validation"
+    fail_if:
+      - "Says it doesn't exist"
+      - "Says it's a proposal not yet deployed"
+
+  - id: std-erc8004-addresses
+    prompt: "What are the contract addresses for ERC-8004?"
+    expected_facts:
+      - "IdentityRegistry: 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
+      - "ReputationRegistry: 0x8004BAa17C55a88189AE136b182e5fdA19dE9b63"
+      - "Same addresses on 20+ chains"
+    fail_if:
+      - "Hallucinates different addresses"
+      - "Says addresses vary by chain"
+
+  - id: std-eip7702
+    prompt: "What is EIP-7702 and is it live?"
+    expected_facts:
+      - "Smart EOAs — EOAs can temporarily delegate to smart contracts"
+      - "Shipped with Pectra, May 7, 2025"
+      - "Live on mainnet, NOT a proposal"
+      - "Enables batch transactions, gas sponsorship, session keys"
+    fail_if:
+      - "Says EIP-7702 is a proposal or not yet deployed"
+      - "Says it shipped before 2025"
+
+  - id: std-x402
+    prompt: "What is x402?"
+    expected_facts:
+      - "HTTP 402 payment protocol for machine-to-machine commerce"
+      - "From Coinbase, production-ready"
+      - "Uses HTTP 402 Payment Required status code"
+      - "Uses EIP-3009 (transferWithAuthorization) for settlement"
+    fail_if:
+      - "Says it doesn't exist"
+      - "Confuses it with a different protocol"
+
+  - id: std-x402-flow
+    prompt: "How does x402 payment work step by step?"
+    expected_facts:
+      - "Client calls API, gets 402 response"
+      - "Client signs EIP-3009 payment"
+      - "Client retries with payment signature header"
+      - "Server verifies and settles onchain"
+    fail_if:
+      - "Gets the flow fundamentally wrong"
+      - "Says it requires API keys or accounts"
+
+  - id: std-eip3009
+    prompt: "What is EIP-3009 and why does it matter?"
+    expected_facts:
+      - "Gasless token transfers via signed authorizations"
+      - "USDC implements it"
+      - "Critical for x402 to work"
+    fail_if:
+      - "Says it doesn't exist"
+      - "Doesn't connect it to x402 or gasless transfers"
+
+  - id: std-agent-economy
+    prompt: "How do ERC-8004 and x402 work together for autonomous agents?"
+    expected_facts:
+      - "ERC-8004 for discovery and reputation"
+      - "x402 for payments"
+      - "Fully autonomous economic loop: discover → check reputation → pay → receive service → post feedback"
+    fail_if:
+      - "Doesn't know about either standard"
+      - "Can't connect them into a coherent workflow"
+
+  - id: std-erc4337-entrypoint
+    prompt: "What is the ERC-4337 EntryPoint v0.7 address?"
+    expected_facts:
+      - "0x0000000071727De22E5E9d8BAf0edAc6f37da032"
+    fail_if:
+      - "Hallucinates a different address"
+      - "Claims ERC-4337 doesn't have a standard EntryPoint"

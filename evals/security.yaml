@@ -1,0 +1,105 @@
+skill: security
+skill_url: https://ethskills.com/security/SKILL.md
+description: "Solidity security patterns and common vulnerabilities"
+
+evals:
+  - id: sec-usdc-decimals
+    prompt: "How many decimals does USDC have?"
+    expected_facts:
+      - "6 decimals, NOT 18"
+      - "This is the #1 source of money-loss bugs"
+    fail_if:
+      - "Says USDC has 18 decimals"
+      - "Doesn't flag this as a common mistake"
+
+  - id: sec-token-decimals-table
+    prompt: "What are the decimal places for USDC, USDT, WBTC, and DAI?"
+    expected_facts:
+      - "USDC: 6 decimals"
+      - "USDT: 6 decimals"
+      - "WBTC: 8 decimals"
+      - "DAI: 18 decimals"
+    fail_if:
+      - "Gets USDC or USDT wrong (claims 18)"
+      - "Gets WBTC wrong (claims 18)"
+
+  - id: sec-safe-erc20
+    prompt: "Why should I use SafeERC20 instead of calling token.transfer() directly?"
+    expected_facts:
+      - "Some tokens like USDT don't return bool on transfer()"
+      - "Standard calls will revert even on success"
+      - "SafeERC20 handles all token implementations"
+    fail_if:
+      - "Says all ERC-20 tokens return bool correctly"
+      - "Doesn't mention USDT as a problem token"
+
+  - id: sec-reentrancy
+    prompt: "What is the Checks-Effects-Interactions pattern and why is it important?"
+    expected_facts:
+      - "Checks: validate inputs first"
+      - "Effects: update state before external calls"
+      - "Interactions: external calls last"
+      - "Prevents reentrancy attacks"
+      - "Use OpenZeppelin ReentrancyGuard as safety net"
+    fail_if:
+      - "Gets the order wrong (interactions before effects)"
+      - "Doesn't mention reentrancy"
+
+  - id: sec-dex-spot-price-oracle
+    prompt: "Can I use Uniswap pool reserves as a price oracle in my smart contract?"
+    expected_facts:
+      - "No — DEX spot prices are manipulable via flash loans"
+      - "Use Chainlink price feeds instead"
+      - "If must use onchain data, use TWAP over 30+ minutes"
+    fail_if:
+      - "Recommends using spot reserves as a price oracle"
+      - "Doesn't mention flash loan manipulation risk"
+
+  - id: sec-vault-inflation
+    prompt: "What is the ERC-4626 vault inflation attack?"
+    expected_facts:
+      - "First depositor manipulates share price"
+      - "Attacker deposits 1 wei, donates tokens, next depositor gets 0 shares"
+      - "Fix: virtual offset in share calculation"
+      - "OpenZeppelin v5 includes mitigation by default"
+    fail_if:
+      - "Doesn't know about the attack"
+      - "Says ERC-4626 is inherently safe"
+
+  - id: sec-solidity-division
+    prompt: "How does division work in Solidity? What's the common mistake?"
+    expected_facts:
+      - "No floating point — division truncates to zero"
+      - "5 / 100 = 0 in Solidity"
+      - "Always multiply before dividing to preserve precision"
+      - "Use basis points (1 bp = 0.01%)"
+    fail_if:
+      - "Claims Solidity has floating point"
+      - "Doesn't mention truncation"
+
+  - id: sec-fee-on-transfer
+    prompt: "What are fee-on-transfer tokens and why are they dangerous?"
+    expected_facts:
+      - "Amount received is less than amount sent"
+      - "Must check balance before and after transfer"
+    fail_if:
+      - "Claims all ERC-20 transfers deliver the exact amount specified"
+
+  - id: sec-infinite-approval
+    prompt: "Is it safe to use type(uint256).max for ERC-20 approvals?"
+    expected_facts:
+      - "No — infinite approvals are dangerous"
+      - "If the approved contract is exploited, attacker drains everything"
+      - "Approve only the exact amount needed"
+    fail_if:
+      - "Recommends infinite approvals as safe practice"
+
+  - id: sec-git-secrets
+    prompt: "What's the biggest security risk when AI agents write Solidity deploy scripts?"
+    expected_facts:
+      - "Committing private keys or API keys to Git"
+      - "Bots scrape GitHub in real-time and exploit leaked secrets in seconds"
+      - "Always use .env files and .gitignore"
+      - "A committed secret is compromised forever"
+    fail_if:
+      - "Doesn't mention key leaking through Git"

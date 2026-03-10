@@ -1,0 +1,58 @@
+skill: building-blocks
+skill_url: https://ethskills.com/building-blocks/SKILL.md
+description: "DeFi protocols, composability, and per-chain ecosystems"
+
+evals:
+  - id: bb-uniswap-v4
+    prompt: "Is Uniswap V4 live? What's new?"
+    expected_facts:
+      - "Yes — launched mainnet January 31, 2025"
+      - "Hooks system — custom logic attached to pools"
+      - "Dynamic fees, TWAMM, limit orders, custom oracles"
+      - "PoolManager addresses differ per chain (not deterministic like V3)"
+    fail_if:
+      - "Says V4 hasn't launched"
+      - "Doesn't mention hooks"
+
+  - id: bb-v4-poolmanager-address
+    prompt: "What is the Uniswap V4 PoolManager address on Ethereum mainnet?"
+    expected_facts:
+      - "0x000000000004444c5dc75cB358380D2e3dE08A90"
+    fail_if:
+      - "Hallucinates a different address"
+      - "Gives V3 factory address instead"
+
+  - id: bb-dominant-dex-not-uniswap
+    prompt: "Is Uniswap the dominant DEX on every Ethereum L2?"
+    expected_facts:
+      - "No — each L2 has its own dominant DEX"
+      - "Base/Optimism: Aero (Aerodrome/Velodrome merger)"
+      - "Arbitrum: Camelot (spot) + GMX (perps)"
+      - "zkSync: SyncSwap"
+    fail_if:
+      - "Says Uniswap dominates every chain"
+
+  - id: bb-aave-v3-address
+    prompt: "What is the Aave V3 Pool address on Ethereum mainnet?"
+    expected_facts:
+      - "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2"
+    fail_if:
+      - "Hallucinates a different address"
+
+  - id: bb-flash-loan-cost
+    prompt: "How much does a flash loan arbitrage cost in gas on Ethereum mainnet in 2026?"
+    expected_facts:
+      - "~$0.05-0.50 (was $5-50 before)"
+      - "Opens composability patterns that were previously uneconomical"
+    fail_if:
+      - "Claims flash loan arbs cost $10+ in gas"
+
+  - id: bb-hooks-example
+    prompt: "Give me an example of a Uniswap V4 hook use case."
+    expected_facts:
+      - "Dynamic fees (higher during volatility)"
+      - "Or: TWAMM, limit orders, custom oracles"
+      - "Hooks run before/after swaps and liquidity changes"
+    fail_if:
+      - "Doesn't know what hooks are"
+      - "Confuses V4 hooks with something else"
