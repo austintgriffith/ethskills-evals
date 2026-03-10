@@ -4,7 +4,7 @@ description: "Solidity security patterns and common vulnerabilities"
 
 evals:
   - id: sec-usdc-decimals
-    prompt: "How many decimals does USDC have?"
+    prompt: "What's dangerous about USDC decimals when writing Solidity?"
     expected_facts:
       - "6 decimals, NOT 18"
       - "This is the #1 source of money-loss bugs"
@@ -95,7 +95,7 @@ evals:
       - "Recommends infinite approvals as safe practice"
 
   - id: sec-git-secrets
-    prompt: "What's the biggest security risk when AI agents write Solidity deploy scripts?"
+    prompt: "What's the biggest security risk when AI agents commit code to GitHub?"
     expected_facts:
       - "Committing private keys or API keys to Git"
       - "Bots scrape GitHub in real-time and exploit leaked secrets in seconds"
