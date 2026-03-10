@@ -75,11 +75,18 @@ chat_completion() {
   local system_msg="$4"
   local user_msg="$5"
 
+  # Determine correct token limit param based on provider
+  local token_param="max_tokens"
+  case "$api_url" in
+    *openai.com*) token_param="max_completion_tokens" ;;
+  esac
+
   local payload
   payload=$(jq -n \
     --arg model "$model_name" \
     --arg system "$system_msg" \
     --arg user "$user_msg" \
+    --arg tp "$token_param" \
     '{
       model: $model,
       messages: [
@@ -87,7 +94,7 @@ chat_completion() {
         {role: "user", content: $user}
       ],
       temperature: 0.0,
-      max_tokens: 2000
+      ($tp): 2000
     }')
 
   curl -s "$api_url" \
@@ -182,8 +189,12 @@ for eval_file in "$EVALS_DIR"/*.yaml; do
 
     judge_result=$(chat_completion "$JUDGE_API" "$JUDGE_KEY" "$JUDGE_NAME" "$JUDGE_SYSTEM" "$judge_input")
 
-    # Parse verdict
-    verdict=$(echo "$judge_result" | jq -r '.verdict // "ERROR"' 2>/dev/null || echo "ERROR")
+    # Parse verdict — extract JSON from response (strip markdown fences, find JSON object)
+    judge_json=$(echo "$judge_result" | grep -v '^```' | perl -0777 -ne 'print $1 if /(\{.*?"verdict".*?\})/s')
+    if [[ -z "$judge_json" ]]; then
+      judge_json="$judge_result"
+    fi
+    verdict=$(echo "$judge_json" | jq -r '.verdict // "ERROR"' 2>/dev/null || echo "ERROR")
 
     case "$verdict" in
       PASS)    pass=$((pass + 1)); echo "✅ PASS" ;;
@@ -197,7 +208,9 @@ for eval_file in "$EVALS_DIR"/*.yaml; do
     if [[ "$RUN_BASELINE" == true && -n "$response_without" ]]; then
       baseline_input="## Prompt\n$prompt\n\n## Response (WITHOUT skill — bare model)\n$response_without\n\n## Expected Facts\n$expected_facts\n\n## Fail Conditions\n$fail_if"
       baseline_judge=$(chat_completion "$JUDGE_API" "$JUDGE_KEY" "$JUDGE_NAME" "$JUDGE_SYSTEM" "$baseline_input")
-      baseline_verdict=$(echo "$baseline_judge" | jq -r '.verdict // "ERROR"' 2>/dev/null || echo "ERROR")
+      baseline_json=$(echo "$baseline_judge" | grep -v '^```' | perl -0777 -ne 'print $1 if /(\{.*?"verdict".*?\})/s')
+      if [[ -z "$baseline_json" ]]; then baseline_json="$baseline_judge"; fi
+      baseline_verdict=$(echo "$baseline_json" | jq -r '.verdict // "ERROR"' 2>/dev/null || echo "ERROR")
       echo "         baseline: $baseline_verdict"
     fi
 

@@ -34,3 +34,7 @@ Evaluate the response and return a JSON object:
 - Numbers can be approximate — within 2x is fine (e.g., "$0.003" matches "$0.002-0.005").
 - Be strict on fail conditions — if the model says something that matches a fail condition, it's a FAIL regardless of other correct facts.
 - Focus on factual accuracy, not style or verbosity.
+
+## Output format
+
+Return ONLY the JSON object. No markdown code fences, no explanation before or after. Just the raw JSON.

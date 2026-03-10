@@ -1,5 +1,5 @@
 results/*.json
-results/*.md
+!results/RESULTS.md
 !results/.gitkeep
 .env
 *.log
